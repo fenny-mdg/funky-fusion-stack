@@ -53,24 +53,6 @@ async function run() {
     next();
   });
 
-  // if we're not in the primary region, then we need to make sure all
-  // non-GET/HEAD/OPTIONS requests hit the primary region rather than read-only
-  // Postgres DBs.
-  app.all("*", function getReplayResponse(req, res, next) {
-    const { method, path: pathname } = req;
-    const isMethodReplayable = !["GET", "OPTIONS", "HEAD"].includes(method);
-    const shouldReplay = isMethodReplayable;
-
-    if (!shouldReplay) return next();
-
-    const logInfo = {
-      pathname,
-      method,
-    };
-    console.info(`Replaying:`, logInfo);
-    return res.sendStatus(409);
-  });
-
   app.use(compression());
 
   // http://expressjs.com/en/advanced/best-practice-security.html#at-a-minimum-disable-x-powered-by-header
