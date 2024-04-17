@@ -22,7 +22,6 @@ module.exports = {
 
   // Base config
   extends: ["eslint:recommended"],
-
   overrides: [
     // React
     {
@@ -50,6 +49,9 @@ module.exports = {
           "warn",
           { validStrategies: ["ternary"] },
         ],
+        // react/prop-types rule is useless on TypeScript project
+        // https://github.com/shadcn-ui/ui/issues/120
+        "react/prop-types": "off",
       },
     },
 
