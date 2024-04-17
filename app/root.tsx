@@ -10,8 +10,8 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 
-import { getUser } from "~/utils/session.server";
 import stylesheet from "~/tailwind.css";
+import { getUser } from "~/utils/session.server";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
