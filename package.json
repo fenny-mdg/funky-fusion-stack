@@ -9,7 +9,7 @@
     "dev": "run-p dev:*",
     "dev:server": "cross-env NODE_ENV=development npm run build:server -- --watch",
     "dev:remix": "remix dev --manual -c \"node --require ./mocks --watch-path ./build/server.js --watch ./build/server.js\"",
-    "docker": "docker compose up -d",
+    "docker": "docker compose -f ./other/docker-compose-postgres.yml up -d",
     "format": "prettier --write .",
     "format:repo": "npm run format && npm run lint -- --fix",
     "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",

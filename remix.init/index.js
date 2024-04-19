@@ -105,7 +105,7 @@ const main = async ({ packageManager, rootDirectory }) => {
   const README_PATH = path.join(rootDirectory, "README.md");
   const EXAMPLE_ENV_PATH = path.join(rootDirectory, ".env.example");
   const ENV_PATH = path.join(rootDirectory, ".env");
-  const DOCKERFILE_PATH = path.join(rootDirectory, "Dockerfile");
+  const DOCKERFILE_PATH = path.join(rootDirectory, "./other/Dockerfile");
   const CYPRESS_SUPPORT_PATH = path.join(rootDirectory, "cypress", "support");
   const CYPRESS_COMMANDS_PATH = path.join(CYPRESS_SUPPORT_PATH, "commands.ts");
   const CREATE_USER_COMMAND_PATH = path.join(
