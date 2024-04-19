@@ -33,7 +33,7 @@ COPY --from=deps /myapp/node_modules /myapp/node_modules
 
 ADD prisma .
 RUN npx prisma generate
-RUN npx primsa migrate deploy
+RUN npx prisma migrate deploy
 
 ADD . .
 RUN npm run build
