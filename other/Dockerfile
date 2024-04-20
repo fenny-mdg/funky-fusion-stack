@@ -3,6 +3,11 @@ FROM node:18-bullseye-slim as base
 
 # set for base and all layer that inherit from it
 ENV NODE_ENV production
+ARG DATABASE_URL
+ENV DATABASE_URL $DATABASE_URL
+
+ARG SESSION_SECRET
+ENV SESSION_SECRET $SESSION_SECRET
 
 # Install openssl for Prisma
 RUN apt-get update && apt-get install -y openssl
