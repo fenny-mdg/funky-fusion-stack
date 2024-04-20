@@ -27,12 +27,6 @@ RUN npm prune --omit=dev
 # Build the app
 FROM base as build
 
-ARG DATABASE_URL
-ENV DATABASE_URL $DATABASE_URL
-
-ARG SESSION_SECRET
-ENV SESSION_SECRET $SESSION_SECRET
-
 WORKDIR /myapp
 
 COPY --from=deps /myapp/node_modules /myapp/node_modules
