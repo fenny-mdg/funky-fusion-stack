@@ -147,7 +147,6 @@ jobs:
           mv ./other/Dockerfile ./Dockerfile
           mv ./other/.dockerignore ./.dockerignore
           mv ./other/docker-compose.yml ./docker-compose.yml
-          rm .gitignore
 
       - name: 🚫 Stopping app
         uses: appleboy/ssh-action@v1.0.0
