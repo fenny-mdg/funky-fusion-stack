@@ -152,15 +152,17 @@ jobs:
         uses: appleboy/ssh-action@v1.0.0
         env:
           APP_DIR: ${{ vars.APP_DIR }}
+          SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
         with:
           host: ${{secrets.SSH_HOST}}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          envs: APP_DIR
+          envs: APP_DIR, SSH_USERNAME
           script: |
-            [[ -z $APP_DIR ]] && echo "APP_DIR not defined" ||  docker compose --env-file $APP_DIR/.env -f $APP_DIR/docker-compose.yml down
-            [[ -z $APP_DIR ]] && echo "APP_DIR not defined" || rm -rf $APP_DIR/*
+            [[ -e $APP_DIR ]] && docker compose --env-file $APP_DIR/.env -f $APP_DIR/docker-compose.yml down || echo "APP_DIR not defined" 
+            [[ -e $APP_DIR ]] && rm -rf $APP_DIR/* || echo "APP_DIR not defined"
+            [[ -e $APP_DIR ]] && echo "APP_DIR already exists" || (sudo mkdir -p $APP_DIR ; sudo chown -R $SSH_USERNAME:$SSH_USERNAME $APP_DIR)
 
       - name: 📁 Copy file via ssh
         uses: appleboy/scp-action@v0.1.3
@@ -171,6 +173,25 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           source: "./,!.git"
           target: ${{ vars.APP_DIR }}
+
+      - name: 🌐 Setup server
+        uses: appleboy/ssh-action@v1.0.0
+        env:
+          APP_DIR: ${{ vars.APP_DIR }}
+          APP_PORT: ${{ vars.APP_PORT }}
+          APP_DOMAIN: ${{ vars.APP_DOMAIN }}
+          APP_DOMAIN_ADMIN_EMAIL: ${{ vars.APP_DOMAIN_ADMIN_EMAIL }}
+        with:
+          host: ${{secrets.SSH_HOST}}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          envs: APP_DIR, APP_PORT, APP_DOMAIN, APP_DOMAIN_ADMIN_EMAIL
+          script: |
+            bash <(curl -sL https://gist.githubusercontent.com/fenny-mdg/cca4a22afda58d96a71bef22599539bc/raw/docker-engine-installer.sh)
+            echo "Docker setup ✅"
+            [[ -z $APP_DOMAIN ]] && echo "No app domain provided do not install and setup apache" || (bash <(curl -sL https://gist.githubusercontent.com/fenny-mdg/2228c137e1a4f8c9e79e2595f637e7d2/raw/apache2-installer-ubuntu.sh); echo "Apache2 setup ✅";)
+            ([[ -z $APP_DOMAIN ]] || [[ -e /etc/apache2/sites-available/$APP_DOMAIN.conf ]]) && echo "Config already set ✅" || (bash <(curl -sL https://gist.githubusercontent.com/fenny-mdg/0960edcc9b8f14273d7503ae0af5b2a0/raw/c2d2a0661b047326b8975d493dd5fbee457e3af1/apache2-conf-creator.sh) --domain_name $APP_DOMAIN --email_admin $APP_DOMAIN_ADMIN_EMAIL --port $APP_PORT)
 
       - name: 🚀 Deploy
         uses: appleboy/ssh-action@v1.0.0
