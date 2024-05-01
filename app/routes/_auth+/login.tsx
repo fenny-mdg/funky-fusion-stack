@@ -10,7 +10,8 @@ import { Form, Link, useActionData, useSearchParams } from "@remix-run/react";
 import { useEffect, useRef } from "react";
 import { z } from "zod";
 
-import { Field } from "~/components/forms";
+import { Button } from "@/components/ui/button";
+import { CheckboxField, Field } from "~/components/forms";
 import { createUserSession, getUserId } from "~/utils/session.server";
 import { verifyLogin } from "~/utils/user.server";
 
@@ -46,7 +47,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   return createUserSession({
     redirectTo: redirectTo || "/",
-    remember: remember === "on" ? true : false,
+    remember: remember === "on",
     request,
     userId: user.id,
   });
@@ -57,7 +58,6 @@ export const meta: MetaFunction = () => [{ title: "Login" }];
 export default function LoginPage() {
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get("redirectTo") || "/notes";
-
   const lastResult = useActionData<typeof action>();
   const [form, fields] = useForm({
     lastResult,
@@ -108,37 +108,28 @@ export default function LoginPage() {
           />
 
           <input type="hidden" name="redirectTo" value={redirectTo} />
-          <button
-            type="submit"
-            className="w-full rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 focus:bg-blue-400"
-          >
+
+          <Button type="submit" className="w-full ">
             Log in
-          </button>
+          </Button>
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <input
-                id="remember"
-                name="remember"
-                type="checkbox"
-                className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+              <CheckboxField
+                labelProps={{ children: "Remember me" }}
+                checkboxProps={getInputProps(fields.remember, {
+                  type: "checkbox",
+                })}
               />
-              <label
-                htmlFor="remember"
-                className="ml-2 block text-sm text-gray-900"
-              >
-                Remember me
-              </label>
             </div>
             <div className="text-center text-sm text-gray-500">
               Don&apos;t have an account?{" "}
               <Link
-                className="text-blue-500 underline"
                 to={{
                   pathname: "/join",
                   search: searchParams.toString(),
                 }}
               >
-                Sign up
+                <Button variant="link">Sign up</Button>
               </Link>
             </div>
           </div>
