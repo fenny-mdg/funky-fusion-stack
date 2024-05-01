@@ -1,6 +1,7 @@
 import type { MetaFunction } from "@remix-run/node";
 import { Link } from "@remix-run/react";
 
+import { Button } from "@/components/ui/button";
 import { useOptionalUser } from "~/utils/utils";
 
 export const meta: MetaFunction = () => [{ title: "Remix Notes" }];
@@ -14,17 +15,17 @@ export default function Index() {
           <div className="relative shadow-xl sm:overflow-hidden sm:rounded-2xl">
             <div className="absolute inset-0">
               <img
-                className="h-full w-full object-cover"
-                src="https://user-images.githubusercontent.com/1500684/158276320-c46b661b-8eff-4a4d-82c6-cf296c987a12.jpg"
-                alt="BB King playing blues on his Gibson 'Lucille' guitar"
+                className="h-full w-full"
+                src="https://fenny-mdg.github.io/images/funky-fusion-stack/hero.webp"
+                alt="Man saxophonist playing jazz"
               />
-              <div className="absolute inset-0 bg-[color:rgba(27,167,254,0.5)] mix-blend-multiply" />
+              <div className="absolute inset-0 bg-[color:rgba(255,127,80,0.15)] mix-blend-multiply" />
             </div>
             <div className="relative px-4 pb-8 pt-16 sm:px-6 sm:pb-14 sm:pt-24 lg:px-8 lg:pb-20 lg:pt-32">
-              <h1 className="text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl">
-                <span className="block uppercase text-blue-500 drop-shadow-md">
-                  Blues Stack
-                </span>
+              <h1 className="text-center text-6xl font-extrabold tracking-tight sm:text-6xl lg:text-8xl">
+                <p className="block uppercase text-primary drop-shadow-2xl p-8">
+                  Funky fusion stack
+                </p>
               </h1>
               <p className="mx-auto mt-6 max-w-lg text-center text-xl text-white sm:max-w-3xl">
                 Check the README.md file for instructions on how to get this
@@ -32,25 +33,16 @@ export default function Index() {
               </p>
               <div className="mx-auto mt-10 max-w-sm sm:flex sm:max-w-none sm:justify-center">
                 {user ? (
-                  <Link
-                    to="/notes"
-                    className="flex items-center justify-center rounded-md border border-transparent bg-white px-4 py-3 text-base font-medium text-blue-700 shadow-sm hover:bg-blue-50 sm:px-8"
-                  >
-                    View Notes for {user.email}
+                  <Link to="/notes">
+                    <Button>View Notes for {user.email}</Button>
                   </Link>
                 ) : (
                   <div className="space-y-4 sm:mx-auto sm:inline-grid sm:grid-cols-2 sm:gap-5 sm:space-y-0">
-                    <Link
-                      to="/join"
-                      className="flex items-center justify-center rounded-md border border-transparent bg-white px-4 py-3 text-base font-medium text-blue-700 shadow-sm hover:bg-blue-50 sm:px-8"
-                    >
-                      Sign up
+                    <Link to="/join">
+                      <Button variant="secondary">Sign up</Button>
                     </Link>
-                    <Link
-                      to="/login"
-                      className="flex items-center justify-center rounded-md bg-blue-500 px-4 py-3 font-medium text-white hover:bg-blue-600"
-                    >
-                      Log In
+                    <Link to="/login">
+                      <Button>Log In</Button>
                     </Link>
                   </div>
                 )}
@@ -83,6 +75,11 @@ export default function Index() {
                 src: "https://user-images.githubusercontent.com/1500684/157764276-a516a239-e377-4a20-b44a-0ac7b65c8c14.svg",
                 alt: "Tailwind",
                 href: "https://tailwindcss.com",
+              },
+              {
+                src: "https://fenny-mdg.github.io/images/funky-fusion-stack/shadcn.png",
+                alt: "Shadcn",
+                href: "https://ui.shadcn.com",
               },
               {
                 src: "https://user-images.githubusercontent.com/1500684/157764454-48ac8c71-a2a9-4b5e-b19c-edef8b8953d6.svg",
@@ -118,6 +115,11 @@ export default function Index() {
                 src: "https://user-images.githubusercontent.com/1500684/157773063-20a0ed64-b9f8-4e0b-9d1e-0b65a3d4a6db.svg",
                 alt: "TypeScript",
                 href: "https://typescriptlang.org",
+              },
+              {
+                src: "https://fenny-mdg.github.io/images/funky-fusion-stack/apache.svg",
+                alt: "Apache",
+                href: "https://apache.org/",
               },
             ].map((img) => (
               <a

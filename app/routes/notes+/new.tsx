@@ -1,53 +1,65 @@
+import { getInputProps, getTextareaProps, useForm } from "@conform-to/react";
+import { getZodConstraint, parseWithZod } from "@conform-to/zod";
 import type { ActionFunctionArgs } from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
 import { Form, useActionData } from "@remix-run/react";
 import { useEffect, useRef } from "react";
+import { z } from "zod";
 
+import { Button } from "@/components/ui/button";
+import { Field, TextareaField } from "~/components/forms";
 import { createNote } from "~/utils/note.server";
 import { requireUserId } from "~/utils/session.server";
 
+const NewNoteSchema = z.object({
+  title: z.string(),
+  body: z.string(),
+});
+
 export const action = async ({ request }: ActionFunctionArgs) => {
   const userId = await requireUserId(request);
-
   const formData = await request.formData();
-  const title = formData.get("title");
-  const body = formData.get("body");
+  const submission = parseWithZod(formData, { schema: NewNoteSchema });
 
-  if (typeof title !== "string" || title.length === 0) {
-    return json(
-      { errors: { body: null, title: "Title is required" } },
-      { status: 400 },
-    );
+  if (submission.status !== "success") {
+    return submission.reply();
   }
 
-  if (typeof body !== "string" || body.length === 0) {
-    return json(
-      { errors: { body: "Body is required", title: null } },
-      { status: 400 },
-    );
-  }
-
+  const { title, body } = submission.value;
   const note = await createNote({ body, title, userId });
 
   return redirect(`/notes/${note.id}`);
 };
 
 export default function NewNotePage() {
-  const actionData = useActionData<typeof action>();
   const titleRef = useRef<HTMLInputElement>(null);
   const bodyRef = useRef<HTMLTextAreaElement>(null);
+  const lastResult = useActionData<typeof action>();
+  const [form, fields] = useForm({
+    lastResult,
+    id: "note-form",
+    constraint: getZodConstraint(NewNoteSchema),
+    onValidate({ formData }) {
+      return parseWithZod(formData, { schema: NewNoteSchema });
+    },
+    shouldRevalidate: "onBlur",
+  });
 
   useEffect(() => {
-    if (actionData?.errors?.title) {
+    if (fields.title.errors) {
       titleRef.current?.focus();
-    } else if (actionData?.errors?.body) {
+    } else if (fields.body.errors) {
       bodyRef.current?.focus();
     }
-  }, [actionData]);
+  }, [fields]);
 
   return (
     <Form
+      id={form.id}
+      aria-invalid={form.errors ? true : undefined}
+      aria-describedby={form.errors ? form.errorId : undefined}
       method="post"
+      className="flex flex-col gap-2 w-full"
       style={{
         display: "flex",
         flexDirection: "column",
@@ -55,54 +67,22 @@ export default function NewNotePage() {
         width: "100%",
       }}
     >
-      <div>
-        <label className="flex w-full flex-col gap-1">
-          <span>Title: </span>
-          <input
-            ref={titleRef}
-            name="title"
-            className="flex-1 rounded-md border-2 border-blue-500 px-3 text-lg leading-loose"
-            aria-invalid={actionData?.errors?.title ? true : undefined}
-            aria-errormessage={
-              actionData?.errors?.title ? "title-error" : undefined
-            }
-          />
-        </label>
-        {actionData?.errors?.title ? (
-          <div className="pt-1 text-red-700" id="title-error">
-            {actionData.errors.title}
-          </div>
-        ) : null}
-      </div>
+      <Field
+        labelProps={{ children: "Title:" }}
+        inputProps={{ ...getInputProps(fields.title, { type: "text" }) }}
+        errors={fields.title.errors}
+        errorId={fields.title.errorId}
+      />
 
-      <div>
-        <label className="flex w-full flex-col gap-1">
-          <span>Body: </span>
-          <textarea
-            ref={bodyRef}
-            name="body"
-            rows={8}
-            className="w-full flex-1 rounded-md border-2 border-blue-500 px-3 py-2 text-lg leading-6"
-            aria-invalid={actionData?.errors?.body ? true : undefined}
-            aria-errormessage={
-              actionData?.errors?.body ? "body-error" : undefined
-            }
-          />
-        </label>
-        {actionData?.errors?.body ? (
-          <div className="pt-1 text-red-700" id="body-error">
-            {actionData.errors.body}
-          </div>
-        ) : null}
-      </div>
+      <TextareaField
+        labelProps={{ children: "Body:" }}
+        textareaProps={{ ...getTextareaProps(fields.body) }}
+        errors={fields.body.errors}
+        errorId={fields.body.errorId}
+      />
 
       <div className="text-right">
-        <button
-          type="submit"
-          className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 focus:bg-blue-400"
-        >
-          Save
-        </button>
+        <Button type="submit"> Save</Button>
       </div>
     </Form>
   );
