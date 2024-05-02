@@ -1,19 +1,20 @@
 # Funky fusion Stack
 
-![The Funky fusion Stack](https://repository-images.githubusercontent.com/461012689/37d5bd8b-fa9c-4ab0-893c-f0a199d5012d)
+![The Funky fusion Stack](https://fenny-mdg.github.io/images/funky-fusion-stack/screenshot.png)
 
 Learn more about [Remix Stacks](https://remix.run/stacks).
 
 ```
-npx create-remix@latest --template remix-run/blues-stack
+npx create-remix@latest --template fenny-mdg/funky-fusion-stack
 ```
 
 ## What's in the stack
 
-- [GitHub Actions](https://github.com/features/actions) for deploy on merge to production and staging environments
+- [GitHub Actions](https://github.com/features/actions) for deploy on merge to production and dev environments
 - Email/Password Authentication with [cookie-based sessions](https://remix.run/utils/sessions#creatememorysessionstorage)
 - Database ORM with [Prisma](https://prisma.io)
-- Styling with [Tailwind](https://tailwindcss.com/)
+- Styling with [Tailwind](https://tailwindcss.com/) and [Shadcn](https://ui.shadcn.com/)
+- Form validation with [Zod](https://zod.dev/) and [Conform](https://conform.guide/)
 - End-to-end testing with [Cypress](https://cypress.io)
 - Local third party request mocking with [MSW](https://mswjs.io)
 - Unit testing with [Vitest](https://vitest.dev) and [Testing Library](https://testing-library.com)
@@ -24,8 +25,6 @@ npx create-remix@latest --template remix-run/blues-stack
 Not a fan of bits of the stack? Fork it, change it, and use `npx create-remix --template your/repo`! Make it your own.
 
 ## Quickstart
-
-
 
 ## Development
 
@@ -71,36 +70,17 @@ The database seed script creates a new user with some data you can use to get st
 - Email: `rachel@remix.run`
 - Password: `racheliscool`
 
-
 ### Relevant code:
 
 This is a pretty simple note-taking app, but it's a good example of how you can build a full stack app with Prisma and Remix. The main functionality is creating users, logging in and out, and creating and deleting notes.
 
-- creating users, and logging in and out [./app/models/user.server.ts](./app/models/user.server.ts)
-- user sessions, and verifying them [./app/session.server.ts](./app/session.server.ts)
-- creating, and deleting notes [./app/models/note.server.ts](./app/models/note.server.ts)
+- creating users, and logging in and out [./app/utils/user.server.ts](./app/utils/user.server.ts)
+- user sessions, and verifying them [./app/utils/session.server.ts](./app/utils/session.server.ts)
+- creating, and deleting notes [./app/utils/note.server.ts](./app/utils/note.server.ts)
 
 ## Deployment
 
-This Remix Stack comes with two GitHub Actions that handle automatically deploying your app to production and staging environments.
-
-Prior to your first deployment, you'll need to do a few things:
-
-- Initialize Git.
-
-  ```sh
-  git init
-  ```
-
-- Create a new [GitHub Repository](https://repo.new), and then add it as the remote for your project. **Do not push your app yet!**
-
-  ```sh
-  git remote add origin <ORIGIN_URL>
-  ```
-
-
-  If you don't have openssl installed, you can also use [1password](https://1password.com/password-generator/) to generate a random secret, just replace `$(openssl rand -hex 32)` with the generated secret.
-
+For further informations, please read [this doc](https://github.com/fenny-mdg/funky-fusion-stack/tree/main/docs/deployment.md)
 
 ## GitHub Actions
 
