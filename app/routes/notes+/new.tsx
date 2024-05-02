@@ -70,15 +70,13 @@ export default function NewNotePage() {
       <Field
         labelProps={{ children: "Title:" }}
         inputProps={{ ...getInputProps(fields.title, { type: "text" }) }}
-        errors={fields.title.errors}
-        errorId={fields.title.errorId}
+        field={fields.title}
       />
 
       <TextareaField
         labelProps={{ children: "Body:" }}
         textareaProps={{ ...getTextareaProps(fields.body) }}
-        errors={fields.body.errors}
-        errorId={fields.body.errorId}
+        field={fields.body}
       />
 
       <div className="text-right">

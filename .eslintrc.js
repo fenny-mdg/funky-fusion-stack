@@ -87,6 +87,7 @@ module.exports = {
             "newlines-between": "always",
           },
         ],
+        "@typescript-eslint/consistent-type-definitions": "off",
       },
     },
 
