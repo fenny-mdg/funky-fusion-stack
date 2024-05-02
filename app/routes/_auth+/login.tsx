@@ -96,15 +96,13 @@ export default function LoginPage() {
           <Field
             labelProps={{ children: "Email address" }}
             inputProps={{ ...getInputProps(fields.email, { type: "email" }) }}
-            errors={fields.email.errors}
-            errorId={fields.email.errorId}
+            field={fields.email}
           />
 
           <Field
             labelProps={{ children: "Password" }}
             inputProps={getInputProps(fields.password, { type: "password" })}
-            errors={fields.password.errors}
-            errorId={fields.password.errorId}
+            field={fields.password}
           />
 
           <input type="hidden" name="redirectTo" value={redirectTo} />
@@ -119,6 +117,7 @@ export default function LoginPage() {
                 checkboxProps={getInputProps(fields.remember, {
                   type: "checkbox",
                 })}
+                field={fields.remember}
               />
             </div>
             <div className="text-center text-sm text-gray-500">

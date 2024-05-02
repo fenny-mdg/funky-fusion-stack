@@ -93,15 +93,13 @@ export default function Join() {
           <Field
             labelProps={{ children: "Email address" }}
             inputProps={{ ...getInputProps(fields.email, { type: "email" }) }}
-            errors={fields.email.errors}
-            errorId={fields.email.errorId}
+            field={fields.email}
           />
 
           <Field
             labelProps={{ children: "Password" }}
             inputProps={getInputProps(fields.password, { type: "password" })}
-            errors={fields.password.errors}
-            errorId={fields.password.errorId}
+            field={fields.password}
           />
 
           <input type="hidden" name="redirectTo" value={redirectTo} />
@@ -109,7 +107,7 @@ export default function Join() {
           <Button type="submit" className="w-full ">
             Create Account
           </Button>
-          
+
           <div className="flex items-center justify-center">
             <div className="text-center text-sm text-gray-500">
               Already have an account?{" "}

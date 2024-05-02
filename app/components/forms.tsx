@@ -1,10 +1,31 @@
-import { useInputControl } from "@conform-to/react";
+import { useInputControl, type FieldMetadata } from "@conform-to/react";
 import React from "react";
 
 import { Checkbox, type CheckboxProps } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+
+type FieldProps = {
+  labelProps: React.LabelHTMLAttributes<HTMLLabelElement>;
+  inputProps: React.InputHTMLAttributes<HTMLInputElement>;
+  className?: string;
+  field: FieldMetadata<string, Record<string, unknown>>;
+};
+
+type TextareaFieldProps = {
+  labelProps: React.LabelHTMLAttributes<HTMLLabelElement>;
+  textareaProps: React.InputHTMLAttributes<HTMLTextAreaElement>;
+  className?: string;
+  field: FieldMetadata<string, Record<string, unknown>>;
+};
+
+type CheckboxFieldProps = {
+  labelProps: JSX.IntrinsicElements["label"];
+  checkboxProps: CheckboxProps;
+  className?: string;
+  field: FieldMetadata<string, Record<string, unknown>>;
+};
 
 export type ListOfErrors = (string | null | undefined)[] | null | undefined;
 
@@ -31,16 +52,11 @@ export function ErrorList({
 export function Field({
   labelProps,
   inputProps,
-  errors,
   className,
-  errorId,
-}: {
-  labelProps: React.LabelHTMLAttributes<HTMLLabelElement>;
-  inputProps: React.InputHTMLAttributes<HTMLInputElement>;
-  errors?: ListOfErrors;
-  className?: string;
-  errorId?: string;
-}) {
+  field,
+}: FieldProps) {
+  const { errorId, errors } = field;
+
   return (
     <div className={className}>
       <Label
@@ -67,16 +83,11 @@ export function Field({
 export function TextareaField({
   labelProps,
   textareaProps,
-  errors,
   className,
-  errorId,
-}: {
-  labelProps: React.LabelHTMLAttributes<HTMLLabelElement>;
-  textareaProps: React.InputHTMLAttributes<HTMLTextAreaElement>;
-  errors?: ListOfErrors;
-  className?: string;
-  errorId?: string;
-}) {
+  field,
+}: TextareaFieldProps) {
+  const { errorId, errors } = field;
+
   return (
     <div className={className}>
       <Label
@@ -103,20 +114,12 @@ export function TextareaField({
 export function CheckboxField({
   labelProps,
   checkboxProps,
-  errors,
   className,
-  errorId,
-}: {
-  labelProps: JSX.IntrinsicElements["label"];
-  checkboxProps: CheckboxProps;
-  errors?: ListOfErrors;
-  className?: string;
-  errorId?: string;
-}) {
-  const control = useInputControl({
-    formId: checkboxProps.form!,
-    name: checkboxProps.name!,
-  });
+  field,
+}: CheckboxFieldProps) {
+  const { errorId, errors } = field;
+  const control = useInputControl(field);
+
   return (
     <div className={className}>
       <div className="flex gap-2">
