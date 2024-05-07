@@ -1,8 +1,8 @@
 import type { MetaFunction } from "@remix-run/node";
 import { Link } from "@remix-run/react";
 
-import { Button } from "@/components/ui/button";
-import { useOptionalUser } from "~/utils/utils";
+import { Button } from "@/components/ui/button.tsx";
+import { useOptionalUser } from "~/utils/utils.ts";
 
 export const meta: MetaFunction = () => [{ title: "Remix Notes" }];
 

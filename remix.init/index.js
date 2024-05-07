@@ -1,10 +1,10 @@
-const { execSync } = require("node:child_process");
-const crypto = require("node:crypto");
-const fs = require("node:fs/promises");
-const path = require("node:path");
+import { execSync } from "node:child_process";
+import crypto from "node:crypto";
+import fs from "node:fs/promises";
+import path from "node:path";
 
-const PackageJson = require("@npmcli/package-json");
-const semver = require("semver");
+import PackageJson from "@npmcli/package-json";
+import semver from "semver";
 
 const cleanupCypressFiles = ({ fileEntries, packageManager }) =>
   fileEntries.flatMap(([filePath, content]) => {
@@ -224,4 +224,4 @@ Setup is almost complete. Follow these steps to finish initialization:
   );
 };
 
-module.exports = main;
+export default main;
