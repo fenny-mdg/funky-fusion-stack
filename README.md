@@ -8,6 +8,9 @@ Learn more about [Remix Stacks](https://remix.run/stacks).
 npx create-remix@latest --template fenny-mdg/funky-fusion-stack
 ```
 
+## Live demo
+Demo is happening [here](https://funky-fusion.fenotiana.dev/)
+
 ## What's in the stack
 
 - [GitHub Actions](https://github.com/features/actions) for deploy on merge to production and dev environments
