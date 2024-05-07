@@ -1,10 +1,10 @@
 import { useInputControl, type FieldMetadata } from "@conform-to/react";
 import React from "react";
 
-import { Checkbox, type CheckboxProps } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { Checkbox, type CheckboxProps } from "@/components/ui/checkbox.tsx";
+import { Input } from "@/components/ui/input.tsx";
+import { Label } from "@/components/ui/label.tsx";
+import { Textarea } from "@/components/ui/textarea.tsx";
 
 type FieldProps = {
   labelProps: React.LabelHTMLAttributes<HTMLLabelElement>;

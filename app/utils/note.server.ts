@@ -1,6 +1,6 @@
 import type { User, Note } from "@prisma/client";
 
-import { prisma } from "~/utils/db.server";
+import { prisma } from "~/utils/db.server.ts";
 
 export type { Note } from "@prisma/client";
 
