@@ -31,7 +31,8 @@
     "/postgres-data",
     "/index.js",
     "/server/dev-server.js",
-    "/server-build"
+    "/server-build",
+    "/remix.init/index.js"
   ],
   "dependencies": {
     "@conform-to/react": "^1.1.0",
